@@ -10,17 +10,15 @@
     exit; // Защита от прямого доступа к файлу
 }
 
-// Register shortcode
 function register_market_price_chart_shortcode()
 {
     add_shortcode('market_price_chart', 'market_price_chart_shortcode_handler');
 }
 add_action('init', 'register_market_price_chart_shortcode');
 
-// Shortcode handler
 function market_price_chart_shortcode_handler()
 {
-    // Enqueue scripts and styles
+
     wp_enqueue_script('moment', plugins_url('node_modules/moment/min/moment.min.js', __FILE__), array(), '2.29.4', true);
     wp_enqueue_script('chartjs-adapter-moment', plugins_url('node_modules/chartjs-adapter-moment/dist/chartjs-adapter-moment.min.js', __FILE__), array('chart-js', 'moment'), '0.1.2', true);
     wp_enqueue_script('chart-js', plugins_url('node_modules/chart.js/dist/Chart.min.js', __FILE__), array(), '2.9.4', true);
@@ -31,7 +29,6 @@ function market_price_chart_shortcode_handler()
     ));
     wp_enqueue_style('market-price-chart-style', plugins_url('css/market-price-chart.css', __FILE__), array(), '1.0');
 
-    // Output container for the chart and buttons
     return '<div id="market-price-chart">
                 <canvas id="market-price-chart-canvas"></canvas>
                 <div class="buttons">
@@ -77,7 +74,7 @@ function save_market_data_to_db()
     foreach ($lines as $line) {
         $data = str_getcsv($line);
         if (count($data) == 2 && is_numeric($data[0]) && is_numeric($data[1])) {
-            $date = date('Y-m-d', intval($data[0] / 1000)); // Деление на 1000 для преобразования миллисекунд в секунды
+            $date = date('Y-m-d', intval($data[0] / 1000));
             $value = floatval($data[1]);
 
             $wpdb->insert($table_name, ['date' => $date, 'value' => $value]);
