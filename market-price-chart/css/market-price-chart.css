@@ -1,0 +1,11 @@
+#market-price-chart {
+    width: 100%;
+    height: 400px;
+    position: relative;
+}
+
+#market-price-chart .buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
